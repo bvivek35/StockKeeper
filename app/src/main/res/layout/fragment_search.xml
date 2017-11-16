@@ -1,0 +1,59 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.search.SearchFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:text="@string/main_page_header"
+            android:textAppearance="@style/main_page_header"
+            android:textSize="30sp" />
+
+        <AutoCompleteTextView
+            android:id="@+id/stock_input"
+            android:dropDownHeight="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/textView"
+            android:layout_margin="30dp"
+            android:hint="@string/stock_input_placeholder"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/get_quote_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView"
+            android:layout_alignTop="@+id/stock_input"
+            android:layout_marginTop="64dp"
+            android:background="@android:color/transparent"
+            android:text="@string/get_quote"
+            android:textAppearance="@style/main_page_button" />
+
+        <Button
+            android:id="@+id/clear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/get_quote_button"
+            android:layout_alignBottom="@+id/get_quote_button"
+            android:layout_alignEnd="@+id/textView"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/transparent"
+            android:text="@string/clear"
+            android:textAppearance="@style/main_page_button" />
+    </RelativeLayout>
+
+</FrameLayout>
