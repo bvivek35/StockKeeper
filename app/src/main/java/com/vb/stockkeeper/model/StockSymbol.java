@@ -1,5 +1,8 @@
 package com.vb.stockkeeper.model;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +10,9 @@ import java.io.Serializable;
  */
 
 public class StockSymbol implements Serializable {
+
+    private static final String EXTRA_KEY = "stock_symbol";
+
     private static final String TAG = StockSymbol.class.getCanonicalName();
 
     private String symbol;
@@ -29,6 +35,29 @@ public class StockSymbol implements Serializable {
     @Override
     public String toString() {
         return this.option;
+    }
+
+    public static StockSymbol fromBundle(Bundle bundle) {
+        if (bundle == null)
+            return null;
+        return (StockSymbol) bundle.getSerializable(EXTRA_KEY);
+    }
+    public static StockSymbol fromIntent(Intent intent) {
+        if (intent == null)
+            return null;
+        return (StockSymbol) intent.getSerializableExtra(EXTRA_KEY);
+    }
+
+    public static void addToBundle(Bundle bundle, StockSymbol symbol) {
+        if (bundle != null) {
+            bundle.putSerializable(EXTRA_KEY, symbol);
+        }
+    }
+
+    public static void addToIntent(Intent intent, StockSymbol symbol) {
+        if (intent != null) {
+            intent.putExtra(EXTRA_KEY, symbol);
+        }
     }
 
     public static String stringify(StockSymbol ss) {

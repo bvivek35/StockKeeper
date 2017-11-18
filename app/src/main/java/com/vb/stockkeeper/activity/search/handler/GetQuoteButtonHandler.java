@@ -1,4 +1,4 @@
-package com.vb.stockkeeper.activity.search;
+package com.vb.stockkeeper.activity.search.handler;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vb.stockkeeper.App;
-import com.vb.stockkeeper.activity.MainActivity;
 import com.vb.stockkeeper.R;
 import com.vb.stockkeeper.activity.details.DetailsActivity;
+import com.vb.stockkeeper.activity.search.fragment.SearchFragment;
 import com.vb.stockkeeper.model.StockSymbol;
 
 /**
@@ -34,9 +34,11 @@ public class GetQuoteButtonHandler implements View.OnClickListener {
         } else {
             Log.i(TAG, "Starting to get quote");
             StockSymbol selectedSymbol = ((SearchFragment)((Activity) v.getContext()).getFragmentManager().findFragmentById(R.id.search_fragment)).getSelectedSymbol();
+            if (selectedSymbol == null)
+                selectedSymbol = new StockSymbol(input.trim());
             Log.d(TAG, "Selected Symbol : " + StockSymbol.stringify(selectedSymbol));
             Intent startDetailsPage = new Intent(v.getContext(), Next_ACTIVITY);
-            startDetailsPage.putExtra(App.STOCK_SYMBOL_INTENT_KEY, selectedSymbol);
+            StockSymbol.addToIntent(startDetailsPage, selectedSymbol);
             v.getContext().startActivity(startDetailsPage);
         }
     }

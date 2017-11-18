@@ -7,7 +7,7 @@
     android:background="@color/main_background"
     tools:context="com.vb.stockkeeper.activity.MainActivity">
     <fragment
-        android:name="com.vb.stockkeeper.activity.search.SearchFragment"
+        android:name="com.vb.stockkeeper.activity.search.fragment.SearchFragment"
         android:id="@+id/search_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

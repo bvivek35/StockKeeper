@@ -1,4 +1,4 @@
-package com.vb.stockkeeper.activity.search;
+package com.vb.stockkeeper.activity.search.handler;
 
 import android.text.Editable;
 import android.text.TextWatcher;

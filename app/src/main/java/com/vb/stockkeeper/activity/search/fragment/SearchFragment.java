@@ -1,4 +1,4 @@
-package com.vb.stockkeeper.activity.search;
+package com.vb.stockkeeper.activity.search.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.vb.stockkeeper.R;
+import com.vb.stockkeeper.activity.search.handler.ClearButtonHandler;
+import com.vb.stockkeeper.activity.search.handler.GetQuoteButtonHandler;
+import com.vb.stockkeeper.activity.search.handler.StockSearchChangeHandler;
 import com.vb.stockkeeper.model.StockSymbol;
 
 
@@ -50,7 +53,6 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //getView().findViewById(R.id.stock_input);
         Log.d(TAG, "Fragment Created");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ((Button) view.findViewById(R.id.clear_button)).setOnClickListener(new ClearButtonHandler());
