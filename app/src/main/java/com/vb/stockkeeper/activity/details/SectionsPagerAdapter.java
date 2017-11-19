@@ -5,9 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
-import com.vb.stockkeeper.activity.details.fragment.CurrentFragment;
-import com.vb.stockkeeper.activity.details.fragment.HistoricalFragment;
-import com.vb.stockkeeper.activity.details.fragment.NewsFeedFragment;
+import com.vb.stockkeeper.activity.details.current.fragment.CurrentFragment;
+import com.vb.stockkeeper.activity.details.historical.fragment.HistoricalFragment;
+import com.vb.stockkeeper.activity.details.newsfeed.fragment.NewsFeedFragment;
 import com.vb.stockkeeper.model.StockSymbol;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {

@@ -31,4 +31,9 @@
         <item name="android:textSize">30sp</item>
     </style>
 
+    <style name="current_page_indicator_change_button">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

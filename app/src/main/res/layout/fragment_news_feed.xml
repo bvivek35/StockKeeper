@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/news_feed_fragment"
-    tools:context="com.vb.stockkeeper.activity.details.fragment.NewsFeedFragment">
+    tools:context="com.vb.stockkeeper.activity.details.newsfeed.fragment.NewsFeedFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

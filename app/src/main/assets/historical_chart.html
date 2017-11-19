@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>Indicator Charts</title>
+    <!-- Load HighCharts -->
+    <script type="text/javascript">
+        COLORS = ['red', 'green', 'blue']
+        IDX = 0
+        function foo() {
+            document.getElementById('heading').style.color = COLORS[IDX%3];
+            document.getElementById('counter').innerHTML = "" + IDX;
+            IDX += 1;
+        }
+        setInterval(3000, foo);
+    </script>
+</head>
+    <body>
+        <h1 id="heading" onclick="javascript:foo()">It Works</h1>
+        <p id="counter"></p>
+    </body>
+</html>

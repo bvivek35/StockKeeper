@@ -1,9 +1,6 @@
-package com.vb.stockkeeper.activity.details.fragment;
+package com.vb.stockkeeper.activity.details.newsfeed.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.vb.stockkeeper.App;
 import com.vb.stockkeeper.R;
 import com.vb.stockkeeper.activity.details.newsfeed.NewsFeedAdapter;
 import com.vb.stockkeeper.model.NewsfeedItem;
 import com.vb.stockkeeper.model.StockSymbol;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class NewsFeedFragment extends Fragment {

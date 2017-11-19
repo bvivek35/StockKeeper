@@ -1,6 +1,6 @@
 package com.vb.stockkeeper.model;
 
-import com.vb.stockkeeper.activity.details.fragment.NewsFeedFragment;
+import com.vb.stockkeeper.activity.details.newsfeed.fragment.NewsFeedFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

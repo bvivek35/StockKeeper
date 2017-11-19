@@ -15,6 +15,8 @@ public class App extends Application {
     private static final String APP_BASE_URL = "http://192.168.0.9:3000";
     private static final String AUTOCOMPLETE_DOC = "/api/listSymbols/";
     public static final String AUTOCOMPLETE_URL = APP_BASE_URL + AUTOCOMPLETE_DOC;
+    public static final String INDICATOR_FILE_URL = "file:///android_asset/indicator_chart.html";
+    public static final String HISTORICAL_FILE_URL = "file:///android_asset/historical_chart.html";
     public static final String STOCK_SYMBOL_INTENT_KEY = "stock_symbol";
 
     @Override

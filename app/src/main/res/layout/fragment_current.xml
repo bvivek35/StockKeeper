@@ -4,94 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/current_fragment"
-    tools:context="com.vb.stockkeeper.activity.details.fragment.CurrentFragment">
+    tools:context="com.vb.stockkeeper.activity.details.current.fragment.CurrentFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <android.support.constraint.ConstraintLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="227dp"
-            android:layout_height="46dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/stock_details"
-            android:textAppearance="@style/current_page_heading"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.132"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TableLayout
-            android:layout_width="337dp"
-            android:layout_height="436dp"
-            android:layout_marginBottom="59dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="42dp"
-            android:stretchColumns="*"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.487"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:layout_constraintVertical_bias="0.026">
-
-            <TableRow
-                android:id="@+id/stock_symbol"
-                android:layout_height="150dp" >
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_weight="1"
-                    android:layout_gravity="left"
-                    android:text="Stock Symbol" />
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="AAPL" />
-            </TableRow>
-
-
-            <TableRow
-                android:id="@+id/stock_price"
-                android:layout_width="match_parent"
-                android:layout_height="150dp" >
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_weight="1"
-                    android:layout_gravity="left"
-                    android:text="Stock Price" />
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="100" />
-            </TableRow>
-        </TableLayout>
-
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="332dp"
-            android:layout_height="52dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="227dp"
+                android:layout_height="46dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/stock_details"
+                android:textAppearance="@style/current_page_heading" />
 
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="42dp"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:id="@+id/stock_symbol"
+                    android:layout_height="150dp">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="Stock Symbol" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="AAPL" />
+                </TableRow>
+
+
+                <TableRow
+                    android:id="@+id/stock_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="Stock Price" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="100" />
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/indicators" />
+
+                <Spinner
+                    android:id="@+id/indicator_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/indicator_change_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAppearance="@style/current_page_indicator_change_button"
+                    android:text="@string/indicator_change" />
+
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/indicator_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

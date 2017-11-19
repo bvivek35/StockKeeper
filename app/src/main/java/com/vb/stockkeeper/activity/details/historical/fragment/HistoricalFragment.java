@@ -1,4 +1,4 @@
-package com.vb.stockkeeper.activity.details.fragment;
+package com.vb.stockkeeper.activity.details.historical.fragment;
 
 
 import android.os.Bundle;
@@ -7,21 +7,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-import com.vb.stockkeeper.App;
 import com.vb.stockkeeper.R;
 import com.vb.stockkeeper.model.StockSymbol;
-import com.vb.stockkeeper.net.VolleyFactory;
 
-public class CurrentFragment extends Fragment {
 
-    private static final String TAG = CurrentFragment.class.getCanonicalName();
+public class HistoricalFragment extends Fragment {
 
-    public CurrentFragment() {}
+    private static final String TAG = HistoricalFragment.class.getCanonicalName();
 
-    public static CurrentFragment newInstance(StockSymbol symbol) {
+    public HistoricalFragment() { }
+
+    public static HistoricalFragment newInstance(StockSymbol symbol) {
         Log.d(TAG, "newInstance");
-        CurrentFragment fragment = new CurrentFragment();
+        HistoricalFragment fragment = new HistoricalFragment();
         Bundle args = new Bundle();
         StockSymbol.addToBundle(args, symbol);
         fragment.setArguments(args);
@@ -40,13 +41,11 @@ public class CurrentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView with: " + StockSymbol.stringify(StockSymbol.fromBundle(getArguments())));
-        //getArguments().putInt("count", getArguments().getInt("count")+1);
-        return inflater.inflate(R.layout.fragment_current, container, false);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState()");
+        View view = inflater.inflate(R.layout.fragment_historical, container, false);
+        WebView webView = view.findViewById(R.id.historical_web_view);
+        webView.loadUrl("http://google.com");
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+        return view;
     }
 }
