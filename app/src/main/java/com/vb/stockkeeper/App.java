@@ -17,6 +17,7 @@ public class App extends Application {
     public static final String AUTOCOMPLETE_URL = APP_BASE_URL + AUTOCOMPLETE_DOC;
     public static final String INDICATOR_FILE_URL = "file:///android_asset/indicator_chart.html";
     public static final String HISTORICAL_FILE_URL = "file:///android_asset/historical_chart.html";
+    public static final String NEWS_FEED_URL = APP_BASE_URL + "/api/stockInfo/newsFeed/";
     public static final String STOCK_SYMBOL_INTENT_KEY = "stock_symbol";
 
     @Override

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vb.stockkeeper.R;
-import com.vb.stockkeeper.model.NewsfeedItem;
+import com.vb.stockkeeper.model.NewsFeedItem;
 
 import java.util.List;
 
@@ -25,10 +25,10 @@ public class NewsFeedAdapter extends BaseAdapter {
     private static final String TAG = NewsFeedAdapter.class.getCanonicalName();
 
     private Context mContext;
-    private List<NewsfeedItem> items;
+    private List<NewsFeedItem> items;
     private static LayoutInflater inflater;
 
-    public NewsFeedAdapter(Context mContext, List<NewsfeedItem> items) {
+    public NewsFeedAdapter(Context mContext, List<NewsFeedItem> items) {
         this.mContext = mContext;
         this.items = items;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,7 +54,7 @@ public class NewsFeedAdapter extends BaseAdapter {
         return this.items.size();
     }
 
-    private static View fillViewFromItem(final NewsfeedItem item) {
+    private static View fillViewFromItem(final NewsFeedItem item) {
         final View view = inflater.inflate(R.layout.news_feed_item, null);
         final String linkUrl = item.getLink();
         view.setOnClickListener(new View.OnClickListener() {
@@ -71,5 +71,13 @@ public class NewsFeedAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.news_feed_author)).setText(item.getAuthor());
         ((TextView) view.findViewById(R.id.news_feed_date)).setText(item.getFormattedDate());
         return view;
+    }
+
+    public List<NewsFeedItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<NewsFeedItem> items) {
+        this.items = items;
     }
 }
