@@ -103,6 +103,7 @@ public class CurrentFragment extends Fragment {
             int id = STOCK_TABLE_IDS[i];
             this.stockTbl[i] = view.findViewById(id);
         }
+        this.changeImage = view.findViewById(R.id.change_image);
         VolleyFactory.getInstance(this.getContext()).addToRequestQueue(prepareRequest(App.STOCK_TABLE_URL+symbol.getSymbol(), this.stockTbl, this.changeImage));
 
         // Setup Spinner
@@ -169,8 +170,8 @@ public class CurrentFragment extends Fragment {
                     JSONObject tbl = response.getJSONObject("data").getJSONObject("infoTable");
                     stockTbl[0].setText(tbl.getString("symbol"));
                     stockTbl[1].setText(tbl.getString("price"));
-                    stockTbl[2].setText(tbl.getString("change"));
-                    if (tbl.getString("change").startsWith("-")) {
+                    stockTbl[2].setText(tbl.getString("changeDisp"));
+                    if (tbl.getString("changeDisp").startsWith("-")) {
                         setDownImage(changeImage);
                     } else {
                         setUpImage(changeImage);
@@ -190,11 +191,11 @@ public class CurrentFragment extends Fragment {
     }
 
     private void setUpImage(ImageView target) {
-
+        target.setImageResource(R.drawable.up);
     }
 
     private void setDownImage(ImageView target) {
-
+        target.setImageResource(R.drawable.down);
     }
 
     private void setupView() {
