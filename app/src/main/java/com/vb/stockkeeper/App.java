@@ -10,11 +10,13 @@ import android.content.SharedPreferences;
 
 public class App extends Application {
 
+
     private SharedPreferences pref;
     private static final String SHARED_PREF_NAME = "APP_SETTINGS";
     private static final String APP_BASE_URL = "http://192.168.0.9:3000";
     private static final String AUTOCOMPLETE_DOC = "/api/listSymbols/";
     public static final String AUTOCOMPLETE_URL = APP_BASE_URL + AUTOCOMPLETE_DOC;
+    public static final String STOCK_TABLE_URL = APP_BASE_URL + "/api/stockInfo/table/";
     public static final String INDICATOR_FILE_URL = "file:///android_asset/indicator_chart.html";
     public static final String HISTORICAL_FILE_URL = "file:///android_asset/historical_chart.html";
     public static final String NEWS_FEED_URL = APP_BASE_URL + "/api/stockInfo/newsFeed/";

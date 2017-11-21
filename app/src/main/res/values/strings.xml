@@ -17,8 +17,17 @@
     <string name="stock_details">Stock Details</string>
     <string name="indicators">Indicators</string>
     <string name="indicator_change">Change</string>
+    <string name="stock_symbol">Stock Symbol</string>
+    <string name="stock_price">Last Price</string>
+    <string name="stock_change">Change</string>
+    <string name="stock_timestamp">Timestamp</string>
+    <string name="stock_open">Open</string>
+    <string name="stock_close">Close</string>
+    <string name="stock_range">Day\'s Range</string>
+    <string name="stock_volume">Volume</string>
 
     <string-array name="indicator_items">
+        <item>Price</item>
         <item>SMA</item>
         <item>EMA</item>
         <item>STOCH</item>

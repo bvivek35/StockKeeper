@@ -2,19 +2,238 @@
 <head>
     <title>Indicator Charts</title>
     <!-- Load HighCharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- JS for this page -->
     <script type="text/javascript">
-        COLORS = ['red', 'green', 'blue']
-        IDX = 0
-        function foo() {
-            document.getElementById('heading').style.color = COLORS[IDX%3];
-            document.getElementById('counter').innerHTML = "" + IDX;
-            IDX += 1;
-        }
-        //setInterval(foo, 3000);
+        var DEFAULT_HIGHCHARTS_OPTIONS = {
+                chart: {
+                    renderTo: 'stockChart',
+                    alignTicks: false,
+                    zoomType: 'x',
+                    pinchType: 'x'
+                },
+
+                subTitle: {
+                    text: 'Source: Alpha Vantage',
+                    floating: true,
+                    style: {
+                        'color': 'blue'
+                    }
+                },
+                xAxis: {
+                    type: 'datetime',
+                    dateTimeLabelFormats: {
+                        week: '%m/%d',
+                    },
+                    tickInterval: 7 * 24 * 60 * 60 * 1000
+                },
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal',
+                    //x: 0,
+                    //y: 100
+                }
+            };
+
+/*------------------------------------------------------------------------------------------------*/
+
+            // render functions - CALL THESE FROM ANDROID
+
+            function renderPriceVolumeChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillPriceVolumeChart);
+            }
+
+            function renderSMAChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=SMA&interval=daily&time_period=10&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            }
+
+            function renderEMAChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=EMA&interval=daily&time_period=10&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            }
+
+            function renderSTOCHChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=STOCH&interval=daily&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            }
+
+            function renderRSIChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=RSI&interval=daily&time_period=10&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            }
+
+            function renderADXChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=ADX&interval=daily&time_period=10&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            }
+
+            function renderCCIChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=CCI&interval=daily&time_period=10&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            }
+
+            function renderBBANDSChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=BBANDS&interval=daily&time_period=10&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            }
+
+            function renderMACDChart(symbol) {
+                ajaxJSONHelper('https://www.alphavantage.co/query?function=MACD&interval=daily&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            }
+/*------------------------------------------------------------------------------------------------*/
+
+            // Charts functions
+
+            function fillPriceVolumeChart(json) {
+                var pts = json['Time Series (Daily)'];
+                var xAxisLabels = []
+                var yAxisLabels = [[], []]
+                for (var i in pts) {
+                    xAxisLabels.push(new Date(i).getTime());
+                    yAxisLabels[0].push(parseFloat(pts[i]['4. close']));
+                    yAxisLabels[1].push(parseInt(pts[i]['5. volume']));
+                }
+                var chartOptions = Object.assign({}, DEFAULT_HIGHCHARTS_OPTIONS, {
+                    title: {
+                        text: 'Stock Price (' + new Date(json['Meta Data']['3. Last Refreshed']).toLocaleDateString()  + ')'
+                    },
+                    yAxis: [{
+                        title: {
+                            text: 'Stock Price'
+                        },
+                        gridLineWidth:0
+                    },{
+                        title: {
+                            text: 'Volume'
+                        },
+                        opposite: true,
+                    }],
+                    series:[{
+                        name: json['Meta Data']['2. Symbol'].toUpperCase(),
+                        type: 'area',
+                        color: 'rgb(240,145,145)',
+                        data: sortZip(zip(xAxisLabels, yAxisLabels[0]), 0)
+                    },{
+                        name: json['Meta Data']['2. Symbol'].toUpperCase() + ' Volume',
+                        yAxis: 1,
+                        type: 'column',
+                        color: 'rgb(250,250,250)',
+                        data: sortZip(zip(xAxisLabels, yAxisLabels[1]), 0)
+                    }],
+                });
+                console.log(chartOptions);
+                Highcharts.chart(chartOptions);
+            }
+
+            function fillIndicatorChart(json) {
+                var indicatorFullText = json['Meta Data']['2: Indicator'];
+                var indicatorShortText = getIndicatorShort(indicatorFullText);
+                var pts = json['Technical Analysis: '+indicatorShortText];
+                var symbol = json['Meta Data']['1: Symbol'];
+                var lastKey = json['Meta Data']['3: Last Refreshed'];
+                var yAxisKeys = pts[lastKey];
+                var yAxisLabels = {};
+                for (var i in yAxisKeys) {
+                    yAxisLabels[i] = []
+                }
+                var xAxisLabels = [];
+                for (var i in pts) {
+                    if (i < '2017-06')
+                        continue;
+                    xAxisLabels.push(new Date(i).getTime());
+                    for (var k in pts[i]) {
+                        yAxisLabels[k].push(parseFloat(pts[i][k]));
+                    }
+                }
+
+                var extraOpts = {
+                    title: {
+                        text: indicatorFullText
+                    },yAxis: [{
+                        title: {
+                            text: indicatorShortText
+                        },
+                        gridLineWidth:0
+                    }],
+                    series: generateSeries(symbol, xAxisLabels, yAxisLabels),
+                };
+
+                var chartOptions = Object.assign({}, DEFAULT_HIGHCHARTS_OPTIONS, extraOpts);
+                console.log(chartOptions);
+                Highcharts.chart(chartOptions);
+            }
+
+            function generateSeries(symbol, xAxisLabels, yAxisLabels) {
+                var defaultOpts = {
+                    marker: {
+                        enabled: true,
+                        radius: 3
+                    },
+                    shadow: true,
+                    type: 'line',
+                };
+                var res = [];
+                var count = 0
+                for (var k in yAxisLabels) {
+                    var tmp = Object.assign({}, defaultOpts, {
+                        name: symbol.toUpperCase() + ' ' + k,
+                        yAxis: count,
+                        data: sortZip(zip(xAxisLabels, yAxisLabels[k]), 0)
+                    });
+                    res.push(tmp);
+                }
+                return res;
+            }
+
+            function zip(l1, l2) {
+                var res = []
+                for (var i = 0; i < l1.length && i < l2.length; ++i) {
+                    res.push([l1[i],l2[i]]);
+                }
+                return res;
+            }
+
+            function sortZip(l, idx) {
+                l.sort(function cmp(a, b) {
+                    return b[idx] < a[idx] ?  1 : b[idx] > a[idx] ? -1 : 0;
+                });
+                return l;
+            }
+
+            function getIndicatorShort(indicatorFullText) {
+                var regexp = /.*\((\w+)\)/g;
+                matches = regexp.exec(indicatorFullText);
+                return matches.length > 1 ? matches[1] : null;
+            }
+
+            function AJAX_ERR_HANDLER(xhr) {
+                alert('Error retrieving data from Alpha Vantage !');
+            }
+
+            function ajaxJSONHelper(url, cb, err) {
+                var xhr = null;
+                if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
+                    xhr = new XMLHttpRequest();
+                } else if (window.ActiveXObject) { // IE 6 and older
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xhr.open('GET', url, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            cb(JSON.parse(xhr.responseText));
+                        } else {
+                            // call error handler
+                            if (err) {
+                                err(xhr);
+                            } else {
+                                AJAX_ERR_HANDLER(xhr);
+                            }
+                        }
+                    }
+                }
+                xhr.send();
+            }
     </script>
 </head>
 <body>
-<h1 id="heading" onclick="javascript:foo()">It Works</h1>
-<p id="counter"></p>
+    <div id="stockChart"></div>
 </body>
 </html>

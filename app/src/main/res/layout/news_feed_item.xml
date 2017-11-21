@@ -6,21 +6,33 @@
     <TextView
         android:id="@+id/news_feed_title"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
         android:paddingLeft="5dp"
-        android:text="TextView" />
+        android:text="title"
+        android:textColor="@android:color/background_dark"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/news_feed_author"
         android:layout_width="match_parent"
-        android:layout_height="34dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
         android:paddingLeft="15dp"
-        android:text="TextView" />
+        android:text="author" />
 
     <TextView
         android:id="@+id/news_feed_date"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:paddingLeft="15dp"
-        android:text="TextView" />
+        android:text="date" />
 </LinearLayout>

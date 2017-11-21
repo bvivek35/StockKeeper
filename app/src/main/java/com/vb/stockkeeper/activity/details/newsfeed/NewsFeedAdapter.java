@@ -24,6 +24,10 @@ public class NewsFeedAdapter extends BaseAdapter {
 
     private static final String TAG = NewsFeedAdapter.class.getCanonicalName();
 
+    private static final String TITLE_PREFIX = "";
+    private static final String AUTHOR_PREFIX = "Author: ";
+    private static final String DATE_PREFIX = "Date: ";
+
     private Context mContext;
     private List<NewsFeedItem> items;
     private static LayoutInflater inflater;
@@ -67,9 +71,9 @@ public class NewsFeedAdapter extends BaseAdapter {
             }
         });
         TextView title = (TextView) view.findViewById(R.id.news_feed_title);
-        title.setText(item.getTitle());
-        ((TextView) view.findViewById(R.id.news_feed_author)).setText(item.getAuthor());
-        ((TextView) view.findViewById(R.id.news_feed_date)).setText(item.getFormattedDate());
+        title.setText(TITLE_PREFIX + item.getTitle());
+        ((TextView) view.findViewById(R.id.news_feed_author)).setText(AUTHOR_PREFIX + item.getAuthor());
+        ((TextView) view.findViewById(R.id.news_feed_date)).setText(DATE_PREFIX + item.getFormattedDate());
         return view;
     }
 

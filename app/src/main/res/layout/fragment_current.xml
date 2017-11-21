@@ -37,47 +37,140 @@
                 android:stretchColumns="*">
 
                 <TableRow
-                    android:id="@+id/stock_symbol"
                     android:layout_height="150dp">
-
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
-                        android:text="Stock Symbol" />
+                        android:text="@string/stock_symbol" />
                     <TextView
+                        android:id="@+id/stock_symbol"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="AAPL" />
+                        android:layout_weight="1" />
                 </TableRow>
-
 
                 <TableRow
-                    android:id="@+id/stock_price"
-                    android:layout_width="match_parent"
                     android:layout_height="150dp">
-
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
-                        android:text="Stock Price" />
+                        android:text="@string/stock_price" />
+                    <TextView
+                        android:id="@+id/stock_price"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_height="150dp">
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
                         android:layout_weight="1"
-                        android:text="100" />
+                        android:text="@string/stock_change" />
+                    <TextView
+                        android:id="@+id/stock_change"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
                 </TableRow>
+
+                <TableRow
+                    android:layout_height="150dp">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/stock_timestamp" />
+                    <TextView
+                        android:id="@+id/stock_timestamp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_height="150dp">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/stock_open" />
+                    <TextView
+                        android:id="@+id/stock_open"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_height="150dp">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/stock_close" />
+                    <TextView
+                        android:id="@+id/stock_close"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_height="150dp">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/stock_range" />
+                    <TextView
+                        android:id="@+id/stock_range"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_height="150dp">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/stock_volume" />
+                    <TextView
+                        android:id="@+id/stock_volume"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </TableRow>
+
             </TableLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -98,16 +191,19 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/indicator_change"
                     android:textAppearance="@style/current_page_indicator_change_button"
-                    android:text="@string/indicator_change" />
+                    android:textColor="@color/colorPrimaryDark" />
 
             </LinearLayout>
 
             <WebView
                 android:id="@+id/indicator_web_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
         </LinearLayout>
     </ScrollView>
