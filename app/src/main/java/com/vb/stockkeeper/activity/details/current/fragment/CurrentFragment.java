@@ -4,6 +4,9 @@ package com.vb.stockkeeper.activity.details.current.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.media.FaceDetector;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,7 +26,14 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.FacebookSdk;
+import com.facebook.LoggingBehavior;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.vb.stockkeeper.App;
 import com.vb.stockkeeper.R;
 import com.vb.stockkeeper.activity.DialogUtils;
@@ -160,11 +170,31 @@ public class CurrentFragment extends Fragment {
         this.webView.setWebContentsDebuggingEnabled(true);
         this.webView.loadUrl(App.INDICATOR_FILE_URL);
         this.webView.addJavascriptInterface(DialogUtils.JSInterface(getActivity()), App.JS_ANDROID_DIALOG_INTERFACE);
+
+        FacebookSdk.setApplicationId("299859720421493");
+        FacebookSdk.sdkInitialize(getContext().getApplicationContext());
+        FacebookSdk.setIsDebugEnabled(true);
+        for (LoggingBehavior tmp: LoggingBehavior.values())
+            FacebookSdk.addLoggingBehavior(tmp);
         this.webView.addJavascriptInterface(new Object () {
             @JavascriptInterface
             public void handleChartURL(String url) {
                 Log.d(TAG, "From JSContext, got URL: " + url);
                 // Export to FB...
+                try {
+                    ShareLinkContent chartContent = new ShareLinkContent.Builder()
+                            .setContentUrl(Uri.parse(url))
+                            .build();
+
+                    /*
+                    SharePhoto photo = new SharePhoto.Builder().setImageUrl(Uri.parse(url)).build();
+                    SharePhotoContent photoContent = new SharePhotoContent.Builder().addPhoto(photo).build();
+                    */
+                    ShareDialog shareDialog = new ShareDialog(getActivity());
+                    shareDialog.show(chartContent);
+                } catch (Exception e) {
+                    Log.e(getClass().getName(),"Error while posting to FB: ", e);
+                }
             }
         }, App.JS_ANDROID_EXPORT_INTERFACE);
 

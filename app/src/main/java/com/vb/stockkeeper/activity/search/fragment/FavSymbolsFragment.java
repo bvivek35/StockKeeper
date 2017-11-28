@@ -12,7 +12,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -85,10 +87,35 @@ public class FavSymbolsFragment extends Fragment {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        //favListAdapter.getFavSymbols().get(info.position);
+        menu.setHeaderTitle("Choose");
+        menu.add(0, v.getId(), 0, "Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getTitle() == "Delete") {
+            Log.d(TAG, "Deleting: " + item.getItemId());
+            int position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
+            FavSymbol removed = favListAdapter.getFavSymbols().remove(position);
+            ((App) getContext().getApplicationContext()).removeSymbolFromSharedPref(removed.getSymbol());
+            favListAdapter.notifyDataSetChanged();
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "Inflating fav symbols layout");
         final View view = inflater.inflate(R.layout.fragment_fav_symbols, container, false);
+
+        registerForContextMenu(view.findViewById(R.id.fav_list));
 
         // Setup Listing
         this.favList = view.findViewById(R.id.fav_list);
@@ -197,7 +224,6 @@ public class FavSymbolsFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
 
@@ -284,6 +310,7 @@ class FavListAdapter extends ArrayAdapter<FavSymbol> {
                 v.getContext().startActivity(startDetailsPage);
             }
         });
+        ret.setLongClickable(true);
         ((TextView) ret.findViewById(R.id.fav_item_symbol)).setText(item.getSymbol());
         ((TextView) ret.findViewById(R.id.fav_item_price)).setText(item.getDisplayPrice());
         ((TextView) ret.findViewById(R.id.fav_item_change)).setText(item.getDisplayChange());

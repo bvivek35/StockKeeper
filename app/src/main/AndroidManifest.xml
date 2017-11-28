@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,7 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="299859720421493"/>
+        <provider android:authorities="com.facebook.app.FacebookContentProvider299859720421493"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
+
+        <activity android:name=".activity.MainActivity" android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,6 +29,7 @@
         </activity>
         <activity
             android:name=".activity.details.DetailsActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_details"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

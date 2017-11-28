@@ -3,6 +3,7 @@ package com.vb.stockkeeper;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.vb.stockkeeper.activity.details.DetailsActivity;
 
@@ -37,7 +38,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        pref = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        pref.getStringSet(SHARED_PREF_NAME, new HashSet<String>());
+        //pref = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public SharedPreferences getPref() {
@@ -47,9 +50,9 @@ public class App extends Application {
     public void addSymbolToSharedPref(String key) {
         Set<String> favSymbols = getPref().getStringSet(SHARED_PREF_NAME, new HashSet<String>());
         favSymbols.add(key);
-        getPref().edit()
-                .putStringSet(SHARED_PREF_NAME, favSymbols)
-                .commit();
+        SharedPreferences.Editor editor = getPref().edit();
+        editor.putStringSet(SHARED_PREF_NAME, favSymbols);
+        editor.commit();
     }
     public void removeSymbolFromSharedPref(String key) {
         Set<String> favSymbols = getPref().getStringSet(SHARED_PREF_NAME, new HashSet<String>());
