@@ -36,4 +36,8 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="auto_refresh_toggle" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">@color/black</item>
+    </style>
+
 </resources>

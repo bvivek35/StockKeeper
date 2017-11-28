@@ -1,12 +1,16 @@
 package com.vb.stockkeeper.activity.details.current.fragment;
 
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -18,9 +22,11 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vb.stockkeeper.App;
 import com.vb.stockkeeper.R;
+import com.vb.stockkeeper.activity.DialogUtils;
 import com.vb.stockkeeper.model.NewsFeedItem;
 import com.vb.stockkeeper.model.StockSymbol;
 import com.vb.stockkeeper.net.CommonJsonErrorHandler;
@@ -31,10 +37,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CurrentFragment extends Fragment {
-
     private static final String TAG = CurrentFragment.class.getCanonicalName();
     private static final String[] JS_FUNCS = {
             "renderPriceVolumeChart", // 0
@@ -47,6 +55,7 @@ public class CurrentFragment extends Fragment {
             "renderBBANDSChart", // 7
             "renderMACDChart", // 8
     };
+    private static final String JS_FUNC_GET_EXPORT_URL = "getCurrentChartAsImage";
     private static final int[] STOCK_TABLE_IDS = {
             R.id.stock_symbol,
             R.id.stock_price,
@@ -64,6 +73,8 @@ public class CurrentFragment extends Fragment {
     private Button changeButton;
     private TextView[] stockTbl;
     private ImageView changeImage;
+    private ImageView fbImage;
+    private ProgressDialog loadDialog;
 
 
     public CurrentFragment() {}
@@ -104,13 +115,35 @@ public class CurrentFragment extends Fragment {
             this.stockTbl[i] = view.findViewById(id);
         }
         this.changeImage = view.findViewById(R.id.change_image);
+        loadDialog = DialogUtils.dismissProgressDialog(loadDialog);
+        loadDialog = DialogUtils.showProgressDialog(getActivity(), "");
         VolleyFactory.getInstance(this.getContext()).addToRequestQueue(prepareRequest(App.STOCK_TABLE_URL+symbol.getSymbol(), this.stockTbl, this.changeImage));
 
         // Setup Spinner
         this.spinner = (Spinner) view.findViewById(R.id.indicator_spinner);
-        ArrayAdapter<CharSequence> indicator_items = ArrayAdapter.createFromResource(view.getContext(), R.array.indicator_items, android.R.layout.simple_spinner_item);
-        indicator_items.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(indicator_items);
+        // Setup Spinner onChange
+        this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            Button _changeButton = changeButton;
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(getClass().getName(), "Spinner ItemClick: " + position);
+                EnableButton();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+        // Setup FB logo action
+        this.fbImage = view.findViewById(R.id.fbShare);
+        this.fbImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.loadUrl("javascript:"+JS_FUNC_GET_EXPORT_URL+"()");
+            }
+        });
 
         // Setup WebView
         this.webView = (WebView) view.findViewById(R.id.indicator_web_view);
@@ -120,11 +153,20 @@ public class CurrentFragment extends Fragment {
                 super.onPageFinished(view, url);
                 // Setup webview with default chart
                 view.loadUrl(getJSURLFromSymbol(symbol.getSymbol(), DEFAULT_RENDERER_IDX));
+                DisableButton();
             }
         });
         this.webView.getSettings().setJavaScriptEnabled(true);
         this.webView.setWebContentsDebuggingEnabled(true);
         this.webView.loadUrl(App.INDICATOR_FILE_URL);
+        this.webView.addJavascriptInterface(DialogUtils.JSInterface(getActivity()), App.JS_ANDROID_DIALOG_INTERFACE);
+        this.webView.addJavascriptInterface(new Object () {
+            @JavascriptInterface
+            public void handleChartURL(String url) {
+                Log.d(TAG, "From JSContext, got URL: " + url);
+                // Export to FB...
+            }
+        }, App.JS_ANDROID_EXPORT_INTERFACE);
 
         // Setup button
         this.changeButton = (Button) view.findViewById(R.id.indicator_change_button);
@@ -141,19 +183,35 @@ public class CurrentFragment extends Fragment {
                     _webView.loadUrl(jsInvokeUrl);
                     Log.d(getClass().getName(), "Called " + jsInvokeUrl + " in JS context");
                 }
+                DisableButton();
             }
         });
 
-        // Setup Spinner onChange
-        this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            Button _changeButton = changeButton;
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(getClass().getName(), "Spinner ItemClick: " + position);
-            }
+        // Setup Favorite action
+        ImageView favImage = (ImageView) view.findViewById(R.id.favoriteImage);
+        int tag = R.drawable.emptystar;
+        if (((App) view.getContext().getApplicationContext()).isSymbolInSharedPref(symbol.getSymbol())) {
+            tag = R.drawable.filledstar;
+        }
+        favImage.setTag(tag);
+        favImage.setImageResource(tag);
 
+        favImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onClick(View v) {
+                Log.d(getClass().getName(), "Fav Image Clicked");
+                boolean alreadyFav = ((Integer)((ImageView) v).getTag()) == R.drawable.filledstar;
+                App app = (App) v.getContext().getApplicationContext();
+                int newImage = R.drawable.emptystar;
+                if (alreadyFav) {
+                    app.removeSymbolFromSharedPref(symbol.getSymbol());
+                    newImage = R.drawable.emptystar;
+                } else {
+                    app.addSymbolToSharedPref(symbol.getSymbol());
+                    newImage = R.drawable.filledstar;
+                }
+                ((ImageView) v).setImageResource(newImage);
+                v.setTag(newImage);
             }
         });
 
@@ -185,9 +243,17 @@ public class CurrentFragment extends Fragment {
 
                 } catch (JSONException e) {
                     Log.e(getClass().getName(), "Error while parsing response: ", e);
+                } finally {
+                    loadDialog = DialogUtils.dismissProgressDialog(loadDialog);
                 }
             }
-        }, new CommonJsonErrorHandler());
+        }, new CommonJsonErrorHandler() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                super.onErrorResponse(error);
+                loadDialog = DialogUtils.dismissProgressDialog(loadDialog);
+            }
+        });
     }
 
     private void setUpImage(ImageView target) {
@@ -206,12 +272,14 @@ public class CurrentFragment extends Fragment {
         return "javascript:" + JS_FUNCS[pos] + "('" + symbol + "')";
     }
 
-    private static void DisableButton(Button button) {
+    private void DisableButton() {
+        Button button = this.changeButton;
         button.setClickable(false);
         //button.setEnabled(false);
         button.setAlpha(0.5f);
     }
-    private static void EnableButton(Button button) {
+    private void EnableButton() {
+        Button button = this.changeButton;
         button.setClickable(true);
         //button.setEnabled(true);
         button.setAlpha(1.0f);
@@ -222,4 +290,34 @@ public class CurrentFragment extends Fragment {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "Saving Instance");
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView()");
+        this.webView.destroy();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy()");
+    }
+}
+
+class ImageExporter {
+
+    private static final String TAG = ImageExporter.class.getCanonicalName();
+
+    private Activity mActivity;
+
+    public ImageExporter(Activity mActivity) {
+        this.mActivity = mActivity;
+    }
+
+    @JavascriptInterface
+    public void handleChartURL(String url) {
+        Log.d(TAG, url);
+    }
+
 }

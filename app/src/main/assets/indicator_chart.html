@@ -2,6 +2,7 @@
 <head>
     <title>Indicator Charts</title>
     <!-- Load HighCharts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -11,7 +12,9 @@
                 chart: {
                     renderTo: 'stockChart',
                     alignTicks: false,
-                    zoomType: 'x',
+                    //zoomType: 'x',
+                    //pinchType: 'x'
+                    panning: true,
                     pinchType: 'x'
                 },
 
@@ -37,6 +40,8 @@
                     //y: 100
                 }
             };
+
+            var EXPORT_URL = 'http://export.highcharts.com/';
 
 /*------------------------------------------------------------------------------------------------*/
 
@@ -81,6 +86,8 @@
 
             // Charts functions
 
+            CURRENT_CHART = Highcharts.getOptions();
+
             function fillPriceVolumeChart(json) {
                 var pts = json['Time Series (Daily)'];
                 var xAxisLabels = []
@@ -119,7 +126,7 @@
                     }],
                 });
                 console.log(chartOptions);
-                Highcharts.chart(chartOptions);
+                CURRENT_CHART = Highcharts.chart(chartOptions);
             }
 
             function fillIndicatorChart(json) {
@@ -157,7 +164,7 @@
 
                 var chartOptions = Object.assign({}, DEFAULT_HIGHCHARTS_OPTIONS, extraOpts);
                 console.log(chartOptions);
-                Highcharts.chart(chartOptions);
+                CURRENT_CHART = Highcharts.chart(chartOptions);
             }
 
             function generateSeries(symbol, xAxisLabels, yAxisLabels) {
@@ -217,6 +224,7 @@
                 xhr.open('GET', url, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
+                        AndroidDialog.dismissProgressDialog();
                         if (xhr.status == 200) {
                             cb(JSON.parse(xhr.responseText));
                         } else {
@@ -230,6 +238,23 @@
                     }
                 }
                 xhr.send();
+                AndroidDialog.showProgressDialog();
+            }
+
+            function getCurrentChartAsImage() {
+                $.ajax({
+                    type: 'POST',
+                    data: encodeURI('async=true&type=jpeg&options=' + JSON.stringify(CURRENT_CHART.options)),
+                    url: 'http://export.highcharts.com/',
+                    success: function (data) {
+                        console.log('get the file from relative url: ', data);
+                        var url = EXPORT_URL + data;
+                        AndroidExporter.handleChartURL(url);
+                    },
+                    error: function (err) {
+                        console.log('error', err);
+                    }
+                });
             }
     </script>
 </head>

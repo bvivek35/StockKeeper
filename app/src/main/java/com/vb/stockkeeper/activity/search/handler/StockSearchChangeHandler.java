@@ -45,7 +45,7 @@ public class StockSearchChangeHandler implements TextWatcher {
         }
         Log.d(TAG, "New Text: " + s);
         String input = s.toString().trim();
-        if (input.length() <= 1) {
+        if (input.length() <= 0) {
             Log.d(TAG, "Not enough chars in input to force autocomplete");
         } else {
             Log.d(TAG, "Need to get autocomplete list for: " + input);

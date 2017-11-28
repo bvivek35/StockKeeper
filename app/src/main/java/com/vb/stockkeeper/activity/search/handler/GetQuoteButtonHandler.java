@@ -20,8 +20,6 @@ import com.vb.stockkeeper.model.StockSymbol;
 
 public class GetQuoteButtonHandler implements View.OnClickListener {
     private static final String TAG = GetQuoteButtonHandler.class.getCanonicalName();
-    private static final Class Next_ACTIVITY = DetailsActivity.class;
-
     @Override
     public void onClick(View v) {
         TextView stockInput = (TextView) ((ViewGroup) v.getParent()).findViewById(R.id.stock_input);
@@ -37,7 +35,7 @@ public class GetQuoteButtonHandler implements View.OnClickListener {
             if (selectedSymbol == null)
                 selectedSymbol = new StockSymbol(input.trim());
             Log.d(TAG, "Selected Symbol : " + StockSymbol.stringify(selectedSymbol));
-            Intent startDetailsPage = new Intent(v.getContext(), Next_ACTIVITY);
+            Intent startDetailsPage = new Intent(v.getContext(), App.DETAILS_ACTIVITY);
             StockSymbol.addToIntent(startDetailsPage, selectedSymbol);
             v.getContext().startActivity(startDetailsPage);
         }

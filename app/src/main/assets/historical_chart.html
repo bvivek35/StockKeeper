@@ -1,8 +1,12 @@
 <html>
 <head>
     <title>Indicator Charts</title>
-    <!-- Load HighCharts -->
+    <!-- Load HighStock -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
     <script type="text/javascript">
+        /*
         COLORS = ['red', 'green', 'blue']
         IDX = 0
         function foo() {
@@ -11,10 +15,71 @@
             IDX += 1;
         }
         setInterval(3000, foo);
+        */
+
+        function ajaxJSONHelper(url, cb, err) {
+                var xhr = null;
+                if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
+                    xhr = new XMLHttpRequest();
+                } else if (window.ActiveXObject) { // IE 6 and older
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xhr.open('GET', url, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        AndroidDialog.dismissProgressDialog();
+                        if (xhr.status == 200) {
+                            var tmp = JSON.parse(xhr.responseText);
+                            console.log(tmp);
+                            cb(tmp);
+                        } else {
+                            // call error handler
+                            if (err) {
+                                err(xhr);
+                            } else {
+                                AJAX_ERR_HANDLER(xhr);
+                            }
+                        }
+                    }
+                }
+                xhr.send();
+                AndroidDialog.showProgressDialog();
+            }
+
+        function _render(data, symbol) {
+            Highcharts.stockChart('container', {
+                rangeSelector: {
+                    selected: 1
+                },
+
+                title: {
+                    text: symbol + ' Stock Price'
+                },
+
+                series: [{
+                    name: symbol,
+                    data: data,
+                    tooltip: {
+                        valueDecimals: 2
+                    }
+                }]
+            });
+        }
+
+        function renderChart(url, symbol) {
+            ajaxJSONHelper(url, function(data) {
+                var _data = data.data.historical;
+                _render(_data, symbol);
+            });
+        }
+
+        function AJAX_ERR_HANDLER(xhr) {
+            console.log(xhr.responseText);
+        }
+
     </script>
 </head>
     <body>
-        <h1 id="heading" onclick="javascript:foo()">It Works</h1>
-        <p id="counter"></p>
+        <div id="container"></div>
     </body>
 </html>

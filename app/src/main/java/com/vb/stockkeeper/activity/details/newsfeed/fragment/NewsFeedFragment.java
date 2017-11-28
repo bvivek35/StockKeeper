@@ -1,5 +1,6 @@
 package com.vb.stockkeeper.activity.details.newsfeed.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.vb.stockkeeper.App;
 import com.vb.stockkeeper.R;
+import com.vb.stockkeeper.activity.DialogUtils;
 import com.vb.stockkeeper.activity.details.newsfeed.NewsFeedAdapter;
 import com.vb.stockkeeper.model.NewsFeedItem;
 import com.vb.stockkeeper.model.StockSymbol;
@@ -29,6 +32,7 @@ public class NewsFeedFragment extends Fragment {
 
     private static final String TAG = NewsFeedFragment.class.getCanonicalName();
     private NewsFeedAdapter newsFeedAdapter;
+    private ProgressDialog loadDialog;
 
     public NewsFeedFragment() {}
 
@@ -52,6 +56,8 @@ public class NewsFeedFragment extends Fragment {
         this.newsFeedAdapter = new NewsFeedAdapter(this.getContext(), new ArrayList<NewsFeedItem>());//Arrays.asList(NewsFeedItem.getMockArray()));
         // Get Data from service
         Log.d(TAG, "Connecting to server for news feed");
+        this.loadDialog = DialogUtils.dismissProgressDialog(this.loadDialog);
+        this.loadDialog = DialogUtils.showProgressDialog(getActivity(), "");
         VolleyFactory.getInstance(this.getContext()).addToRequestQueue(prepareRequest(App.NEWS_FEED_URL+symbol.getSymbol(), this.newsFeedAdapter));
     }
 
@@ -82,12 +88,21 @@ public class NewsFeedFragment extends Fragment {
                 } catch (JSONException e) {
                     Log.e(getClass().getName(), "Error while parsing response: ", e);
                 }
+                finally {
+                    loadDialog = DialogUtils.dismissProgressDialog(loadDialog);
+                }
                 if (responseItems.size() > 0) {
                     newsFeedAdapter.getItems().clear();
                     newsFeedAdapter.getItems().addAll(responseItems);
                     newsFeedAdapter.notifyDataSetChanged();
                 }
             }
-        }, new CommonJsonErrorHandler());
+        }, new CommonJsonErrorHandler() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                super.onErrorResponse(error);
+                loadDialog = DialogUtils.dismissProgressDialog(loadDialog);
+            }
+        });
     }
 }
