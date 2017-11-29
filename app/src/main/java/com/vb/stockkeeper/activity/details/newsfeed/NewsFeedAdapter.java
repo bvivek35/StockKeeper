@@ -65,7 +65,6 @@ public class NewsFeedAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Log.d(getClass().getCanonicalName(), "Opening link in browser: " + linkUrl);
-                Toast.makeText(v.getContext(), linkUrl, Toast.LENGTH_SHORT).show();
                 Intent viewPageIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(linkUrl));
                 v.getContext().startActivity(viewPageIntent);
             }

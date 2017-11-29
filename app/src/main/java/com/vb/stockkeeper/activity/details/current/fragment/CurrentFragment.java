@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -182,16 +183,33 @@ public class CurrentFragment extends Fragment {
                 Log.d(TAG, "From JSContext, got URL: " + url);
                 // Export to FB...
                 try {
+                    VolleyFactory.getInstance(getContext()).addToRequestQueue(new ImageRequest(url, new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            SharePhoto photo = new SharePhoto.Builder().setBitmap(response).build();
+                            SharePhotoContent photoContent = new SharePhotoContent.Builder().addPhoto(photo).build();
+                            ShareDialog shareDialog = new ShareDialog(getActivity());
+                            shareDialog.show(photoContent);
+
+                        }
+                    }, 0, 0, null, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getContext(), "Could not get image for chart", Toast.LENGTH_SHORT).show();
+                        }
+                    }));
+                    /*
                     ShareLinkContent chartContent = new ShareLinkContent.Builder()
                             .setContentUrl(Uri.parse(url))
                             .build();
 
-                    /*
+
                     SharePhoto photo = new SharePhoto.Builder().setImageUrl(Uri.parse(url)).build();
                     SharePhotoContent photoContent = new SharePhotoContent.Builder().addPhoto(photo).build();
-                    */
+
                     ShareDialog shareDialog = new ShareDialog(getActivity());
                     shareDialog.show(chartContent);
+                    */
                 } catch (Exception e) {
                     Log.e(getClass().getName(),"Error while posting to FB: ", e);
                 }

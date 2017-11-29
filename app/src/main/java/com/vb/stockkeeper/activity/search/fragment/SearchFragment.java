@@ -65,7 +65,6 @@ public class SearchFragment extends Fragment {
                 StockSymbol selectedSymbol = (StockSymbol) parent.getAdapter().getItem(position);
                 setSelectedSymbol(selectedSymbol);
                 Log.d(TAG, "Selected: " + StockSymbol.stringify(selectedSymbol));
-                Toast.makeText(view.getContext(), selectedSymbol.getSymbol(), Toast.LENGTH_SHORT).show();
             }
         });
         return view;

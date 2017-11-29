@@ -27,7 +27,7 @@
                 xhr.open('GET', url, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
-                        AndroidDialog.dismissProgressDialog();
+                        //AndroidDialog.dismissProgressDialog();
                         if (xhr.status == 200) {
                             var tmp = JSON.parse(xhr.responseText);
                             console.log(tmp);
@@ -43,7 +43,7 @@
                     }
                 }
                 xhr.send();
-                AndroidDialog.showProgressDialog();
+                //AndroidDialog.showProgressDialog();
             }
 
         function _render(data, symbol) {

@@ -18,7 +18,8 @@
             android:layout_marginTop="18dp"
             android:text="@string/main_page_header"
             android:textAppearance="@style/main_page_header"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:inputType="text" />
 
         <AutoCompleteTextView
             android:id="@+id/stock_input"

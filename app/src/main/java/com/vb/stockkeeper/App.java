@@ -57,9 +57,9 @@ public class App extends Application {
     public void removeSymbolFromSharedPref(String key) {
         Set<String> favSymbols = getPref().getStringSet(SHARED_PREF_NAME, new HashSet<String>());
         favSymbols.remove(key);
-        getPref().edit()
-                .putStringSet(SHARED_PREF_NAME, favSymbols)
-                .commit();
+        SharedPreferences.Editor editor = getPref().edit();
+        editor.putStringSet(SHARED_PREF_NAME, favSymbols);
+        editor.commit();
     }
     public boolean isSymbolInSharedPref(String key) {
         Set<String> favSymbols = getPref().getStringSet(SHARED_PREF_NAME, new HashSet<String>());

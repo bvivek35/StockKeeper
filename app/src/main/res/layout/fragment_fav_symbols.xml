@@ -19,7 +19,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/favorites_header" />
+                android:text="@string/favorites_header"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:layout_marginLeft="25dp"/>
 
             <TextView
                 android:id="@+id/textView"
@@ -27,7 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="@string/autorefresh" />
+                android:text="@string/autorefresh"
+                android:textColor="@color/white"
+                android:textSize="15sp"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/auto_refresh_toggle"

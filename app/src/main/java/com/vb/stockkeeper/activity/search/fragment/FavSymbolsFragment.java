@@ -313,7 +313,13 @@ class FavListAdapter extends ArrayAdapter<FavSymbol> {
         ret.setLongClickable(true);
         ((TextView) ret.findViewById(R.id.fav_item_symbol)).setText(item.getSymbol());
         ((TextView) ret.findViewById(R.id.fav_item_price)).setText(item.getDisplayPrice());
-        ((TextView) ret.findViewById(R.id.fav_item_change)).setText(item.getDisplayChange());
+        TextView changeView = (TextView) ret.findViewById(R.id.fav_item_change);
+        int color = R.color.green;
+        if (item.getDisplayChange().startsWith("-")) {
+            color = R.color.red;
+        }
+        changeView.setTextColor(color);
+        changeView.setText(item.getDisplayChange());
 
         return ret;
     }
