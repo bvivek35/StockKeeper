@@ -47,40 +47,40 @@
 
             // render functions - CALL THESE FROM ANDROID
 
-            function renderPriceVolumeChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillPriceVolumeChart);
+            function renderPriceVolumeChart(url) {
+                ajaxJSONHelper(url, fillPriceVolumeChart);
             }
 
-            function renderSMAChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=SMA&interval=daily&time_period=10&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            function renderSMAChart(url) {
+                ajaxJSONHelper(url, fillIndicatorChart);
             }
 
-            function renderEMAChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=EMA&interval=daily&time_period=10&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            function renderEMAChart(url) {
+                ajaxJSONHelper(url, fillIndicatorChart);
             }
 
-            function renderSTOCHChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=STOCH&interval=daily&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            function renderSTOCHChart(url) {
+                ajaxJSONHelper(url, fillIndicatorChart);
             }
 
-            function renderRSIChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=RSI&interval=daily&time_period=10&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            function renderRSIChart(url) {
+                ajaxJSONHelper(url, fillIndicatorChart);
             }
 
-            function renderADXChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=ADX&interval=daily&time_period=10&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            function renderADXChart(url) {
+                ajaxJSONHelper(url, fillIndicatorChart);
             }
 
-            function renderCCIChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=CCI&interval=daily&time_period=10&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            function renderCCIChart(url) {
+                ajaxJSONHelper(url, fillIndicatorChart);
             }
 
-            function renderBBANDSChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=BBANDS&interval=daily&time_period=10&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            function renderBBANDSChart(url) {
+                ajaxJSONHelper(url, fillIndicatorChart);
             }
 
-            function renderMACDChart(symbol) {
-                ajaxJSONHelper('https://www.alphavantage.co/query?function=MACD&interval=daily&series_type=close&apikey=ESD6WKJA9FUB3I8T&symbol='+symbol, fillIndicatorChart);
+            function renderMACDChart(url) {
+                ajaxJSONHelper(url, fillIndicatorChart);
             }
 /*------------------------------------------------------------------------------------------------*/
 
@@ -89,17 +89,9 @@
             CURRENT_CHART = Highcharts.getOptions();
 
             function fillPriceVolumeChart(json) {
-                var pts = json['Time Series (Daily)'];
-                var xAxisLabels = []
-                var yAxisLabels = [[], []]
-                for (var i in pts) {
-                    xAxisLabels.push(new Date(i).getTime());
-                    yAxisLabels[0].push(parseFloat(pts[i]['4. close']));
-                    yAxisLabels[1].push(parseInt(pts[i]['5. volume']));
-                }
                 var chartOptions = Object.assign({}, DEFAULT_HIGHCHARTS_OPTIONS, {
                     title: {
-                        text: 'Stock Price (' + new Date(json['Meta Data']['3. Last Refreshed']).toLocaleDateString()  + ')'
+                        text: 'Stock Price (' + new Date(json.data.lastRefresh).toLocaleDateString()  + ')'
                     },
                     yAxis: [{
                         title: {
@@ -113,16 +105,16 @@
                         opposite: true,
                     }],
                     series:[{
-                        name: json['Meta Data']['2. Symbol'].toUpperCase(),
+                        name: json.data.symbol.toUpperCase(),
                         type: 'area',
                         color: 'rgb(240,145,145)',
-                        data: sortZip(zip(xAxisLabels, yAxisLabels[0]), 0)
+                        data: json.data.series[0]
                     },{
-                        name: json['Meta Data']['2. Symbol'].toUpperCase() + ' Volume',
+                        name: json.data.symbol.toUpperCase() + ' Volume',
                         yAxis: 1,
                         type: 'column',
                         color: 'rgb(250,250,250)',
-                        data: sortZip(zip(xAxisLabels, yAxisLabels[1]), 0)
+                        data: json.data.series[1]
                     }],
                 });
                 console.log(chartOptions);
@@ -130,36 +122,16 @@
             }
 
             function fillIndicatorChart(json) {
-                var indicatorFullText = json['Meta Data']['2: Indicator'];
-                var indicatorShortText = getIndicatorShort(indicatorFullText);
-                var pts = json['Technical Analysis: '+indicatorShortText];
-                var symbol = json['Meta Data']['1: Symbol'];
-                var lastKey = json['Meta Data']['3: Last Refreshed'];
-                var yAxisKeys = pts[lastKey];
-                var yAxisLabels = {};
-                for (var i in yAxisKeys) {
-                    yAxisLabels[i] = []
-                }
-                var xAxisLabels = [];
-                for (var i in pts) {
-                    if (i < '2017-06')
-                        continue;
-                    xAxisLabels.push(new Date(i).getTime());
-                    for (var k in pts[i]) {
-                        yAxisLabels[k].push(parseFloat(pts[i][k]));
-                    }
-                }
-
                 var extraOpts = {
                     title: {
-                        text: indicatorFullText
+                        text: json.data.indicatorFullText
                     },yAxis: [{
                         title: {
-                            text: indicatorShortText
+                            text: json.data.indicatorShortText
                         },
                         gridLineWidth:0
                     }],
-                    series: generateSeries(symbol, xAxisLabels, yAxisLabels),
+                    series: json.data.series
                 };
 
                 var chartOptions = Object.assign({}, DEFAULT_HIGHCHARTS_OPTIONS, extraOpts);

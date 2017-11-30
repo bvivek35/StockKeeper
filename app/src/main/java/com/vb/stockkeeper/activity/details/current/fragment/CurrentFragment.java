@@ -66,6 +66,17 @@ public class CurrentFragment extends Fragment {
             "renderBBANDSChart", // 7
             "renderMACDChart", // 8
     };
+    private static final String[] INDICATOR_API_PARAM = {
+            "price", // 0
+            "sma", // 1
+            "ema", // 2
+            "stoch", // 3
+            "rsi", // 4
+            "adx", // 5
+            "cci", // 6
+            "bbands", // 7
+            "macd", // 8
+    };
     private static final String JS_FUNC_GET_EXPORT_URL = "getCurrentChartAsImage";
     private static final int[] STOCK_TABLE_IDS = {
             R.id.stock_symbol,
@@ -317,7 +328,8 @@ public class CurrentFragment extends Fragment {
     }
 
     private static String getJSURLFromSymbol(String symbol, int pos) {
-        return "javascript:" + JS_FUNCS[pos] + "('" + symbol + "')";
+        String indicator = INDICATOR_API_PARAM[pos];
+        return "javascript:" + JS_FUNCS[pos] + "('" + App.INDICATOR_DATA_URL + symbol + "/" + indicator + "')";
     }
 
     private void DisableButton() {
