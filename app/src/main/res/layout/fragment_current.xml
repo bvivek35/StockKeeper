@@ -57,148 +57,213 @@
             <TableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginEnd="28dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="42dp"
-                android:stretchColumns="*">
+                android:layout_marginVertical="20dp"
+                android:layout_marginHorizontal="10dp"
+                android:stretchColumns="*" >
 
                 <TableRow
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginVertical="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/table_border">
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/stock_symbol" />
                     <TextView
                         android:id="@+id/stock_symbol"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
                         android:layout_weight="1" />
                 </TableRow>
 
                 <TableRow
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginVertical="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/table_border" >
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/stock_price" />
                     <TextView
                         android:id="@+id/stock_price"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
                         android:layout_weight="1" />
                 </TableRow>
 
                 <TableRow
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginVertical="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/table_border" >
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/stock_change" />
-                    <TextView
-                        android:id="@+id/stock_change"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                    <LinearLayout
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/stock_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="17sp"
+                            android:textColor="@color/black"
+                            android:layout_weight="1" />
 
-                    <ImageView
-                        android:id="@+id/change_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:maxWidth="20dp"
-                        android:maxHeight="20dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/up"
-                        android:layout_weight="1" />
+                        <ImageView
+                            android:id="@+id/change_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:maxWidth="20dp"
+                            android:maxHeight="20dp"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/up"
+                            android:layout_weight="1" />
+                    </LinearLayout>
                 </TableRow>
 
                 <TableRow
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginVertical="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/table_border" >
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/stock_timestamp" />
                     <TextView
                         android:id="@+id/stock_timestamp"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
                         android:layout_weight="1" />
                 </TableRow>
 
                 <TableRow
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginVertical="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/table_border" >
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/stock_open" />
                     <TextView
                         android:id="@+id/stock_open"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
                         android:layout_weight="1" />
                 </TableRow>
 
                 <TableRow
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginVertical="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/table_border" >
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/stock_close" />
                     <TextView
                         android:id="@+id/stock_close"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
                         android:layout_weight="1" />
                 </TableRow>
 
                 <TableRow
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginVertical="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/table_border" >
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/stock_range" />
                     <TextView
                         android:id="@+id/stock_range"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
                         android:layout_weight="1" />
                 </TableRow>
 
                 <TableRow
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginVertical="5dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/table_border" >
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_gravity="left"
                         android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:text="@string/stock_volume" />
                     <TextView
                         android:id="@+id/stock_volume"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
                         android:layout_weight="1" />
                 </TableRow>
 
@@ -217,7 +282,7 @@
                     android:layout_weight="1"
                     android:textSize="22sp"
                     android:textColor="@color/black"
-                    android:textColorHighlight="@color/black"
+                    android:textStyle="bold"
                     android:text="@string/indicators" />
 
                 <Spinner

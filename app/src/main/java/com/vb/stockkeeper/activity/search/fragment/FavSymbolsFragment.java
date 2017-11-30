@@ -91,13 +91,14 @@ public class FavSymbolsFragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         //favListAdapter.getFavSymbols().get(info.position);
-        menu.setHeaderTitle("Choose");
-        menu.add(0, v.getId(), 0, "Delete");
+        menu.setHeaderTitle("Remove from Favorites?");
+        menu.add(0, v.getId(), 0, "No");
+        menu.add(0, v.getId(), 0, "Yes");
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if (item.getTitle() == "Delete") {
+        if (item.getTitle() == "Yes") {
             Log.d(TAG, "Deleting: " + item.getItemId());
             int position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
             FavSymbol removed = favListAdapter.getFavSymbols().remove(position);
